@@ -1,0 +1,8 @@
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+        Scanner all = new Scanner(System.in);
+        System.out.println("Ввидите выражение:");
+        System.out.println(Calc.calc(all.nextLine()));
+    }
+}
