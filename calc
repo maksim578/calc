@@ -1,0 +1,259 @@
+import java.util.Arrays;
+class Calc {
+    public static String calc(String all) {
+        String redactString = all.replaceAll(" ", "");
+        try {
+            if (redactString.isEmpty()) throw new Exception("Строка не должна быть пустой.");
+        } catch (Exception exepti) {
+            System.out.println(exepti.getMessage());
+            return "Попробуй еще раз.";
+        }
+
+        char[] chekString = redactString.toCharArray();
+        int countOfoperators = 0;
+        for (char charik : chekString) {
+            if (charik == '+' || charik == '-' || charik == '*' || charik == '/') {
+                countOfoperators++;
+            }
+        }
+        try {
+            if (countOfoperators > 1) throw new Exception("Не должно быть больше двух операторов .");
+        } catch (Exception eeexxe) {
+            System.out.println(eeexxe.getMessage());
+            return "Попробуй еще раз.";
+        }
+        try {
+            if (countOfoperators < 1) throw new Exception("Оператор не должен отсутсвовать.");
+        } catch (Exception eexxe) {
+            System.out.println(eexxe.getMessage());
+            return "Попробуй еще раз.";
+        }
+
+        String romeAnswer = "";
+        String operandOne = "";
+        String operandTwo = "";
+        String[] arabArray = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+        String[] romeArray = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
+        int a = 0;
+        int b = 0;
+        int countNumbArab = 0;
+        int countNumbRome = 0;
+        int romeResult = 0;
+        int arabResult = 0;
+
+        if (redactString.contains("+")) {
+            operandOne = redactString.substring(0, redactString.indexOf("+"));
+            operandTwo = redactString.substring(redactString.indexOf("+") + 1);
+        }
+        if (redactString.contains("-")) {
+            operandOne = redactString.substring(0, redactString.indexOf("-"));
+            operandTwo = redactString.substring(redactString.indexOf("-") + 1);
+        }
+        if (redactString.contains("*")) {
+            operandOne = redactString.substring(0, redactString.indexOf("*"));
+            operandTwo = redactString.substring(redactString.indexOf("*") + 1);
+        }
+        if (redactString.contains("/")) {
+            operandOne = redactString.substring(0, redactString.indexOf("/"));
+            operandTwo = redactString.substring(redactString.indexOf("/") + 1);
+        }
+
+        try {
+            for (String c : romeArray) {
+                for (String n : arabArray) {
+                    if (c.equals(operandOne) && n.equals(operandTwo) ||
+                            n.equals(operandOne) && c.equals(operandTwo)) {
+                        throw new Exception("Одновременно операнды должны быть равными только одной системе счисления.");
+                    }
+                }
+            }
+        } catch (Exception exxep) {
+            System.out.println(exxep.getMessage());
+            return "Попробуй еще раз.";
+        }
+
+        for (int couun = 0; couun < arabArray.length; couun++) {
+            if (arabArray[couun].equals(operandOne)) {
+                countNumbArab++;
+            }
+            if (arabArray[couun].equals(operandTwo)) {
+                countNumbArab++;
+            }
+        }
+
+        for (int couun = 0; couun < romeArray.length; couun++) {
+            if (romeArray[couun].equals(operandOne)) {
+                countNumbRome++;
+            }
+            if (romeArray[couun].equals(operandTwo)) {
+                countNumbRome++;
+            }
+        }
+        try {
+            if (countNumbArab !=2 && countNumbRome !=2) throw new Exception( "Диапазон вводимых чисел должен быть в пределах 'I-X' или 1-10.");
+            }catch (Exception eexx) {
+            System.out.println(eexx.getMessage());
+            return "";
+        }
+
+        if (countNumbRome == 2 && countNumbArab < 1) {                            // Расчеты для римской системы.
+            for (int counter = 0; counter < romeArray.length; counter++) {
+                if (operandOne.equals(romeArray[counter])) {
+                    a = counter + 1;
+                }
+                if (operandTwo.equals(romeArray[counter])) {
+                    b = counter + 1;
+                }
+            }
+
+            String one = "I";
+            String two = "II";
+            String three = "III";
+            String four = "IV";
+            String five = "V";
+            String six = "VI";
+            String seven = "VII";
+            String eight = "VIII";
+            String nine = "IX";
+            String ten = "X";
+
+            if ((redactString.startsWith(one) || redactString.startsWith(two) || redactString.startsWith(three) || redactString.startsWith(four) ||
+                    redactString.startsWith(five) || redactString.startsWith(six) || redactString.startsWith(seven) ||
+                    redactString.startsWith(eight) || redactString.startsWith(nine) || redactString.startsWith(ten)) &&
+                    (redactString.endsWith(one) || redactString.endsWith(two) || redactString.endsWith(three) || redactString.endsWith(four) || redactString.endsWith(five) ||
+                            redactString.endsWith(six) || redactString.endsWith(seven) || redactString.endsWith(eight) || redactString.endsWith(nine) || redactString.endsWith(ten))) {
+
+                if (redactString.contains("+")) {
+                    romeResult = (a + b);
+                }
+                if (redactString.contains("-")) {
+                    romeResult = (a - b);
+                }
+                if (redactString.contains("*")) {
+                    romeResult = (a * b);
+                }
+                if (redactString.contains("/")) {
+                    romeResult = (a / b);
+                }
+
+                try {
+                    if (romeResult == 0) throw new Exception("В римской системе нет нуля.");
+                    if (romeResult < 0) throw new Exception("В римской системе нет отрицательных чисел.");
+                } catch (Exception exx) {
+                    System.out.println(exx.getMessage());
+                    return "опробуй еще раз.";
+                }
+            }
+
+            String lastDigit = Integer.toString(romeResult).substring(Integer.toString(romeResult).length() - 1);
+
+            if (romeResult > 0 && romeResult < 11) {
+                return romeArray[romeResult - 1];
+            }
+            if (romeResult > 10 && romeResult < 20) {
+                romeAnswer = (lastDigit);
+                romeResult = Integer.parseInt(romeAnswer);
+                return "X" + romeArray[romeResult - 1];
+            }
+            if (romeResult > 19 && romeResult < 30) {
+                romeAnswer = (lastDigit);
+                romeResult = Integer.parseInt(romeAnswer);
+                if (romeResult <= 1) {
+                    return "XX";
+                } else {
+                    return "XX" + romeArray[romeResult - 1];
+                }
+            }
+            if (romeResult > 29 && romeResult < 40) {
+                romeAnswer = (lastDigit);
+                romeResult = Integer.parseInt(romeAnswer);
+                if (romeResult <= 1) {
+                    return "XXX";
+                } else {
+                    return "XXX" + romeArray[romeResult - 1];
+                }
+            }
+            if (romeResult > 39 && romeResult < 50) {
+                romeAnswer = (lastDigit);
+                romeResult = Integer.parseInt(romeAnswer);
+                if (romeResult <= 1) {
+                    return "XL";
+                } else {
+                    return "XL" + romeArray[romeResult - 1];
+                }
+            }
+            if (romeResult > 49 && romeResult < 60) {
+                romeAnswer = (lastDigit);
+                romeResult = Integer.parseInt(romeAnswer);
+                if (romeResult <= 1) {
+                    return "L";
+                } else {
+                    return "L" + romeArray[romeResult - 1];
+                }
+            }
+            if (romeResult > 59 && romeResult < 70) {
+                romeAnswer = (lastDigit);
+                romeResult = Integer.parseInt(romeAnswer);
+                if (romeResult <= 1) {
+                    return "LX";
+                } else {
+                    return "LX" + romeArray[romeResult - 1];
+                }
+            }
+            if (romeResult > 69 && romeResult < 80) {
+                romeAnswer = (lastDigit);
+                romeResult = Integer.parseInt(romeAnswer);
+                if (romeResult <= 1) {
+                    return "LXX";
+                } else {
+                    return "LXX" + romeArray[romeResult - 1];
+                }
+            }
+            if (romeResult > 79 && romeResult < 90) {
+                romeAnswer = (lastDigit);
+                romeResult = Integer.parseInt(romeAnswer);
+                if (romeResult <= 1) {
+                    return "LXXX";
+                } else {
+                    return "LXXX" + romeArray[romeResult - 1];
+                }
+            }
+            if (romeResult > 89 && romeResult < 100) {
+                romeAnswer = (lastDigit);
+                romeResult = Integer.parseInt(romeAnswer);
+                if (romeResult <= 1) {
+                    return "XC";
+                } else {
+                    return "XC" + romeArray[romeResult - 1];
+                }
+            }
+            if (romeResult == 100) {
+                return "C";
+            }
+            return "";
+        }
+                                                              // Расчеты для арабской системы.
+        if (countNumbArab == 2 && countNumbRome < 2) {
+
+            a = Integer.parseInt(operandOne);
+            b = Integer.parseInt(operandTwo);
+
+
+            if (redactString.contains("+")) {
+                arabResult = (a + b);
+            }
+            if (redactString.contains("-")) {
+                arabResult = (a - b);
+            }
+            if (redactString.contains("*")) {
+                arabResult = (a * b);
+            }
+            if (redactString.contains("/")) {
+                arabResult = (a / b);
+            }
+            System.out.println(arabResult);
+        }
+        return "";
+    }
+
+}
